@@ -23,5 +23,5 @@ inputs:
     default: 'gpt-4'
 
 runs:
-  using: 'bun1'
-  main: 'src/index.ts'
+  using: 'docker'
+  image: './Dockerfile'
