@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+RUN node build.js
 
 # Copy the rest of the application code
 COPY . .
@@ -17,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # Run your application
-CMD ["npx", "tsx", "src/index.ts"]
+CMD ["node", "dist/index.js"]

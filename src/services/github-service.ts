@@ -123,7 +123,7 @@ export class GitHubService {
     body: string;
     branch: string;
     labels: string[];
-  }): Promise<void> {
+  }): Promise<number> {
     const { owner, repo } = context.repo;
 
     // Create the pull request
@@ -145,6 +145,8 @@ export class GitHubService {
         labels,
       });
     }
+
+    return pr.number;
   }
 
   /**

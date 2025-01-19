@@ -2,6 +2,7 @@ import { AIService } from '../services/ai-service.js';
 import { GitHubService } from '../services/github-service.js';
 import { generatePRDescription } from '../utils/templates.js';
 import { Issue } from '../types/index.js';
+import { context } from '@actions/github';
 
 /**
  * IssueHandler manages the process of converting GitHub issues into pull requests
@@ -53,11 +54,19 @@ export class IssueHandler {
       analysis,
     });
 
-    await this.githubService.createPR({
+    const prNumber = await this.githubService.createPR({
       title: `AI: ${issue.title}`,
       body: prDescription,
       branch: branchName,
       labels: ['axiotree-langchain-ai-pr'],
+    });
+
+    // Add comment to the original issue with PR link
+    const { owner, repo } = context.repo;
+    const prLink = `https://github.com/${owner}/${repo}/pull/${prNumber}`;
+    await this.githubService.addComment({
+      prNumber: issue.number,  // Comment on the original issue
+      body: `✨ I've created a pull request with the requested changes: [#${prNumber}](${prLink})\n\nPlease review the changes and provide feedback if needed.`
     });
   }
 }
