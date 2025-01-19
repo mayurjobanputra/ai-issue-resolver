@@ -37,7 +37,7 @@
 
 ### From GitHub Marketplace
 
-1. Visit the [Axiotree Langchain AI PR Action](https://github.com/marketplace) in the GitHub Marketplace
+1. Visit the [Axiotree AI Issue Resolver](https://github.com/marketplace/actions/ai-issue-resolver-ai-generated-pr-updates) in the GitHub Marketplace
 2. Click "Install it for free"
 3. Select the repositories where you want to use the action
 4. Follow the setup instructions below to configure the action
