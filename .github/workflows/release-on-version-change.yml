@@ -69,7 +69,7 @@ jobs:
           # Tag the new version
           git tag "v$NEW_VERSION"
           # Push the new tag
-          git push origin "v$NEW_VERSION"
+          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Axiotree/ai-issue-resolver.git "v$NEW_VERSION"
 
       - name: Create GitHub Release
         if: steps.compare_version.outputs.version_changed == 'true'
