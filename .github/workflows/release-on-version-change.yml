@@ -64,9 +64,10 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Set up Git remote
+        if: steps.compare_version.outputs.version_changed == 'true'
         run: |
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} 
-              
+
       - name: Push tag
         if: steps.compare_version.outputs.version_changed == 'true'
         env:
