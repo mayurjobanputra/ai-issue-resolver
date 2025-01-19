@@ -87,7 +87,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             NEW_VERSION=${{ steps.compare_version.outputs.NEW_VERSION }}
-            sed -i '' '/dist/d' .gitignore
+            sed -i '/dist/d' .gitignore
             git add dist/
             git commit -m "Release v$NEW_VERSION"
             git tag "v$NEW_VERSION"
