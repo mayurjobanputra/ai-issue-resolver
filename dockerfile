@@ -1,17 +1,20 @@
-# Use the official Bun image as the base image
-FROM oven/bun:latest
+# Use the official Node image as the base image
+FROM node:20-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . .
+# Copy package.json and package-lock.json first for better caching
+COPY package*.json ./
 
-# Install dependencies using Bun
-RUN bun install
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
 
 # Expose the port your app runs on (if applicable)
 EXPOSE 3000
 
 # Run your application
-CMD ["bun", "src/index.ts"]
+CMD ["npx", "tsx", "src/index.ts"]
