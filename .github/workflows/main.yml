@@ -1,0 +1,21 @@
+name: AI PR Generation
+on:
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+jobs:
+  ai-pr:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver')) ||
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver-change'))
+    steps:
+      - uses: actions/checkout@v3
+      - uses: axiotree/ai-issue-resolver@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model-provider: 'openai'  # optional, defaults to 'openai'
+          model-name: 'gpt-4'      # optional, defaults to 'gpt-4'

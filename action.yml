@@ -1,0 +1,27 @@
+name: 'AI Issue Resolver & AI generated PR updates'
+description: 'AI-driven code gen & PR management with LangChain. Multi-LLM, slash commands, and interactive updates.'
+author: 'Axiotree'
+
+branding:
+  icon: 'git-pull-request'
+  color: 'purple'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access'
+    required: true
+  openai-api-key:
+    description: 'OpenAI API key for GPT models'
+    required: true
+  model-provider:
+    description: 'LLM provider (openai, anthropic, ollama)'
+    required: false
+    default: 'openai'
+  model-name:
+    description: 'Name of the model to use'
+    required: false
+    default: 'gpt-4'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
