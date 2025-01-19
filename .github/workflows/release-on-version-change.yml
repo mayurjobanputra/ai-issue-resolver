@@ -63,6 +63,17 @@ jobs:
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20 # Or your project's Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run TypeScript project
+        run: node build.js
+
       - name: Set up Git remote
         if: steps.compare_version.outputs.version_changed == 'true'
         run: |
@@ -74,6 +85,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             NEW_VERSION=${{ steps.compare_version.outputs.NEW_VERSION }}
+            git add dist/
+            git commit -m "Release v$NEW_VERSION"
             git tag "v$NEW_VERSION"
             git push origin "v$NEW_VERSION"
 
