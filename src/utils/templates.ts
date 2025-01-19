@@ -1,11 +1,18 @@
-import { CodeChange } from '../types';
+import { CodeChange } from '../types/index.js';
 
+/**
+ * Parameters for generating a pull request description
+ */
 interface PRDescriptionParams {
   issueNumber: number;
   changes: CodeChange[];
   analysis: string;
 }
 
+/**
+ * Generates a formatted pull request description including the analysis
+ * and a list of changes made.
+ */
 export function generatePRDescription({ issueNumber, changes, analysis }: PRDescriptionParams): string {
   return `
 ## 🤖 AI-Generated Pull Request

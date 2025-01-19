@@ -1,8 +1,12 @@
-import { AIService } from '../services/ai-service';
-import { GitHubService } from '../services/github-service';
-import { generatePRDescription } from '../utils/templates';
-import { Issue } from '../types';
+import { AIService } from '../services/ai-service.js';
+import { GitHubService } from '../services/github-service.js';
+import { generatePRDescription } from '../utils/templates.js';
+import { Issue } from '../types/index.js';
 
+/**
+ * IssueHandler manages the process of converting GitHub issues into pull requests
+ * using AI-powered code generation and analysis.
+ */
 export class IssueHandler {
   constructor(
     private githubService: GitHubService,
@@ -10,19 +14,29 @@ export class IssueHandler {
   ) {}
 
   /**
-   * Handles an issue by analyzing it, generating code changes, creating a new branch,
-   * committing the changes, and creating a pull request.
-   *
-   * @param issue - The issue to handle.
-   * @returns A promise that resolves when the issue handling is complete.
+   * Processes a GitHub issue and generates a corresponding pull request.
+   * The process includes:
+   * 1. Analyzing the issue content
+   * 2. Generating code changes
+   * 3. Creating a new branch
+   * 4. Committing changes
+   * 5. Creating a pull request
+   * 
+   * @param issue - The GitHub issue to process
+   * @throws Error if any step in the process fails
    */
   async handleIssue(issue: Issue): Promise<void> {
+    // Analyze issue content using AI
     const analysis = await this.aiService.analyzeIssue(issue.body);
+
+    // Generate code changes based on analysis
     const changes = await this.aiService.generateCodeChanges(analysis);
-    
+
+    // Create a new branch for the changes
     const branchName = `ai-pr/${issue.number}`;
     await this.githubService.createBranch(branchName);
-    
+
+    // Commit each change to the branch
     for (const change of changes) {
       await this.githubService.commitChange({
         branch: branchName,
@@ -32,6 +46,7 @@ export class IssueHandler {
       });
     }
 
+    // Generate PR description and create PR
     const prDescription = generatePRDescription({
       issueNumber: issue.number,
       changes,

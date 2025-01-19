@@ -88,21 +88,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install GitHub CLI
-        if: steps.compare_version.outputs.version_changed == 'true'
-        run: |
-           sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-           sudo apt-add-repository https://cli.github.com/packages
-           sudo apt update
-           sudo apt install gh
-
-      - name: Publish Action to Marketplace
-        if: steps.compare_version.outputs.version_changed == 'true'
-        run: |
-            gh api \
-              --method POST \
-              -H "Accept: application/vnd.github+json" \
-              /repos/${{ github.repository }}/actions/publish-marketplace
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    

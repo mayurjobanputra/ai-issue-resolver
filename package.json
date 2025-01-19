@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "bun src/index.ts"
+    "dev": "tsx src/index.ts"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
