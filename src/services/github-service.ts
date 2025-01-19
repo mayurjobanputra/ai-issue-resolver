@@ -4,6 +4,10 @@ import { context } from '@actions/github';
 export class GitHubService {
   constructor(private octokit: Octokit) {}
 
+  /**
+   * Creates a new branch from the main branch.
+   * @param branchName - The name of the new branch.
+   */
   async createBranch(branchName: string): Promise<void> {
     const { owner, repo } = context.repo;
     const { data: ref } = await this.octokit.git.getRef({
@@ -20,6 +24,14 @@ export class GitHubService {
     });
   }
 
+  /**
+   * Commits a change to a specified branch.
+   * @param params - The parameters for the commit.
+   * @param params.branch - The branch to commit to.
+   * @param params.path - The file path to change.
+   * @param params.content - The new content for the file.
+   * @param params.message - The commit message.
+   */
   async commitChange({ branch, path, content, message }: {
     branch: string;
     path: string;
@@ -42,10 +54,18 @@ export class GitHubService {
       message,
       content: Buffer.from(content).toString('base64'),
       branch,
-      sha: currentFile?.sha,
+      sha: Array.isArray(currentFile) ? undefined : currentFile?.sha,
     });
   }
 
+  /**
+   * Creates a pull request.
+   * @param params - The parameters for the pull request.
+   * @param params.title - The title of the pull request.
+   * @param params.body - The body description of the pull request.
+   * @param params.branch - The branch to merge from.
+   * @param params.labels - The labels to add to the pull request.
+   */
   async createPR({ title, body, branch, labels }: {
     title: string;
     body: string;
@@ -73,6 +93,11 @@ export class GitHubService {
     }
   }
 
+  /**
+   * Retrieves a pull request by its URL.
+   * @param issueUrl - The URL of the pull request.
+   * @returns The pull request data.
+   */
   async getPR(issueUrl: string): Promise<any> {
     const { owner, repo } = context.repo;
     const prNumber = parseInt(issueUrl.split('/').pop() || '0');
@@ -86,6 +111,11 @@ export class GitHubService {
     return pr;
   }
 
+  /**
+   * Retrieves the files changed in a pull request.
+   * @param prNumber - The number of the pull request.
+   * @returns An array of files changed in the pull request.
+   */
   async getPRFiles(prNumber: number): Promise<any[]> {
     const { owner, repo } = context.repo;
 
@@ -98,6 +128,12 @@ export class GitHubService {
     return files;
   }
 
+  /**
+   * Adds a comment to a pull request.
+   * @param params - The parameters for the comment.
+   * @param params.prNumber - The number of the pull request.
+   * @param params.body - The content of the comment.
+   */
   async addComment({ prNumber, body }: {
     prNumber: number;
     body: string;

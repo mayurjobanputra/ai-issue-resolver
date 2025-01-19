@@ -9,6 +9,13 @@ export class IssueHandler {
     private aiService: AIService
   ) {}
 
+  /**
+   * Handles an issue by analyzing it, generating code changes, creating a new branch,
+   * committing the changes, and creating a pull request.
+   *
+   * @param issue - The issue to handle.
+   * @returns A promise that resolves when the issue handling is complete.
+   */
   async handleIssue(issue: Issue): Promise<void> {
     const analysis = await this.aiService.analyzeIssue(issue.body);
     const changes = await this.aiService.generateCodeChanges(analysis);
