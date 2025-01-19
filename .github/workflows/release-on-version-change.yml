@@ -13,10 +13,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
         with:
-            fetch-depth: 0  # Fetch all history so HEAD^ exists
+          # Ensure we fetch the full commit history so HEAD^ exists
+          fetch-depth: 0
+
       - name: Detect if package.json changed
         id: detect_change
         run: |
+          # Check if package.json is in the list of changed files in the latest commit
           PACKAGE_JSON_CHANGED=$(git diff --name-only HEAD^ HEAD | grep "package.json" || true)
           if [ -z "$PACKAGE_JSON_CHANGED" ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -28,6 +31,14 @@ jobs:
         id: compare_version
         if: steps.detect_change.outputs.changed == 'true'
         run: |
+          # Verify that HEAD^ exists (in case there's only one commit)
+          if ! git show HEAD^:package.json >/dev/null 2>&1; then
+            echo "No previous commit found. Skipping version check."
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Read old vs. new version fields from package.json
           OLD_VERSION=$(git show HEAD^:package.json | jq -r '.version')
           NEW_VERSION=$(jq -r '.version' package.json)
 
@@ -38,22 +49,21 @@ jobs:
             echo "version_changed=true" >> $GITHUB_OUTPUT
           else
             echo "version_changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Generate release notes
         id: generate_notes
         if: steps.compare_version.outputs.version_changed == 'true'
         run: |
-          # Collect all commit messages from the previous tag (if any) to HEAD.
-          # If there's no previous tag, this might error or produce no notes.
-          # Feel free to refine how you detect the "old tag" if needed.
-          # For simplicity, we assume the old tag was "v$OLD_VERSION".
           OLD_VERSION=${{ steps.compare_version.outputs.OLD_VERSION }}
           NEW_VERSION=${{ steps.compare_version.outputs.NEW_VERSION }}
 
-          # If OLD_VERSION is empty, fallback to HEAD^..HEAD
+          # If OLD_VERSION is null or empty, we just grab the latest commit message
           if [ -z "$OLD_VERSION" ] || [ "$OLD_VERSION" = "null" ]; then
             NOTES=$(git log -1 --pretty=format:"- %s" --no-merges)
           else
+            # You can refine how you calculate the range here
+            # For simplicity, we log from OLD_VERSION..HEAD if there's a tag named v<OLD_VERSION>
             if git rev-parse "v$OLD_VERSION" >/dev/null 2>&1; then
               RANGE="v$OLD_VERSION..HEAD"
             else
@@ -62,7 +72,7 @@ jobs:
             NOTES=$(git log $RANGE --pretty=format:"- %s" --no-merges)
           fi
 
-          # Output to the next step
+          # Output the notes to be used by the next step
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -71,9 +81,11 @@ jobs:
         if: steps.compare_version.outputs.version_changed == 'true'
         run: |
           NEW_VERSION=${{ steps.compare_version.outputs.NEW_VERSION }}
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Tag the new version
           git tag "v$NEW_VERSION"
+          # Push the new tag
           git push origin "v$NEW_VERSION"
 
       - name: Create GitHub Release
