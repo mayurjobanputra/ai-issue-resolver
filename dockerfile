@@ -7,12 +7,15 @@ WORKDIR /app
 # Copy package.json and package-lock.json first for better caching
 COPY package*.json ./
 
+
 # Install dependencies
 RUN npm install
-RUN node build.js
 
 # Copy the rest of the application code
 COPY . .
+
+RUN node build.js
+
 
 # Expose the port your app runs on (if applicable)
 EXPOSE 3000
