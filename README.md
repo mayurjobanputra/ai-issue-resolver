@@ -7,7 +7,7 @@
 ## Features
 
 - 🎯 **Automated PR Generation**
-  - Generate PRs automatically from issues tagged with `axiotree-langchain-ai-pr`
+  - Generate PRs automatically from issues tagged with `ai-issue-resolver`
   - AI analysis of issue descriptions for accurate code changes
   - Intelligent branch management and commit organization
 
@@ -30,8 +30,8 @@
   - Request specific changes with natural language
   - Get instant AI-powered feedback
   - Multiple command support:
-    - `/axiotree-langchain-ai-change` - Request specific code changes
-    - `/axiotree-langchain-ai-review` - Trigger comprehensive code review
+    - `/ai-issue-resolver-change` - Request specific code changes
+    - `/ai-issue-resolver-review` - Trigger comprehensive code review
 
 ## Installation
 
@@ -58,8 +58,8 @@ jobs:
   ai-pr:
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'axiotree-langchain-ai-pr')) ||
-      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/axiotree-langchain-ai-change'))
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver')) ||
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver-change'))
     steps:
       - uses: actions/checkout@v3
       - uses: axiotree/ai-issue-resolver@v1
@@ -79,12 +79,12 @@ jobs:
 ### Generating AI PRs from Issues
 
 1. Create a new issue describing the desired changes
-2. Add the `axiotree-langchain-ai-pr` label to the issue
+2. Add the `ai-issue-resolver` label to the issue
 3. The action will:
    - Analyze the issue using the configured LLM
    - Generate appropriate code changes
    - Create a new PR with the changes
-   - Tag the PR with `axiotree-langchain-ai-pr`
+   - Tag the PR with `ai-issue-resolver`
 
 Example issue:
 ```markdown
@@ -100,7 +100,7 @@ Please implement these validations using the existing form library.
 
 ### Using Code Review Features
 
-1. On any pull request, comment with `/axiotree-langchain-ai-review`
+1. On any pull request, comment with `/ai-issue-resolver-review`
 2. The AI will provide comprehensive feedback including:
    - Code quality assessment
    - Security vulnerability scan
@@ -109,15 +109,15 @@ Please implement these validations using the existing form library.
 
 Example review command:
 ```markdown
-/axiotree-langchain-ai-review
+/ai-issue-resolver-review
 ```
 
 ### Requesting Changes in PRs
 
-Use the `/axiotree-langchain-ai-change` slash command followed by your request:
+Use the `/ai-issue-resolver-change` slash command followed by your request:
 
 ```markdown
-/axiotree-langchain-ai-change Please add error messages that appear below each input field when validation fails
+/ai-issue-resolver-change Please add error messages that appear below each input field when validation fails
 ```
 
 ## Configuration Options
