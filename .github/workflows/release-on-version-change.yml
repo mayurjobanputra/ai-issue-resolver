@@ -59,9 +59,34 @@ jobs:
           fi
 
           # Output the notes to be used by the next step
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$NOTES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo 'notes<<RELEASE_NOTES' >> $GITHUB_OUTPUT
+          echo 'message<<EOF' >> $GITHUB_OUTPUT
+          echo '# Axiotree AI Issue Resolver' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo 'We are excited to announce the v$NEW_VERSION release of Axiotree AI Issue Resolver, a GitHub Action plugin that integrates AI-powered code generation and review processes into your GitHub workflow using Langchain.' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '## Key Features' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '* Automated PR Generation: Generate PRs automatically from issues tagged with axiotree-langchain-ai-pr.' >> $GITHUB_OUTPUT
+          echo '* Advanced Code Review: Comprehensive code quality analysis, performance optimization suggestions, and security vulnerability scanning.' >> $GITHUB_OUTPUT
+          echo '* Interactive PR Updates: Update PRs using slash commands and request specific changes with natural language.' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '## Installation' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '* Visit the GitHub Marketplace.' >> $GITHUB_OUTPUT
+          echo '* Add the action to your repository workflow.' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '## Usage' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '* Label issues with axiotree-langchain-ai-pr to generate PRs.' >> $GITHUB_OUTPUT
+          echo '* Use /axiotree-langchain-ai-review for code reviews.' >> $GITHUB_OUTPUT
+          echo '* Use /axiotree-langchain-ai-change to request specific changes.' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '## Support' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo 'For support, check the documentation, open an issue, or email support@axiotree.com.' >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+          echo 'RELEASE_NOTES' >> $GITHUB_OUTPUT
           
      
 
