@@ -16,36 +16,19 @@ jobs:
           # Ensure we fetch the full commit history so HEAD^ exists
           fetch-depth: 0
 
-      - name: Detect if package.json changed
-        id: detect_change
-        run: |
-          # Check if package.json is in the list of changed files in the latest commit
-          PACKAGE_JSON_CHANGED=$(git diff --name-only HEAD^ HEAD | grep "package.json" || true)
-          if [ -z "$PACKAGE_JSON_CHANGED" ]; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          echo "changed=true" >> $GITHUB_OUTPUT
-
       - name: Compare version
         id: compare_version
-        if: steps.detect_change.outputs.changed == 'true'
         run: |
-          # Verify that HEAD^ exists (in case there's only one commit)
-          if ! git show HEAD^:package.json >/dev/null 2>&1; then
-            echo "No previous commit found. Skipping version check."
-            echo "version_changed=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+          # Get the latest tag from GitHub
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
 
-          # Read old vs. new version fields from package.json
-          OLD_VERSION=$(git show HEAD^:package.json | jq -r '.version')
+          # Read the new version field from package.json
           NEW_VERSION=$(jq -r '.version' package.json)
 
-          echo "OLD_VERSION=$OLD_VERSION" >> $GITHUB_OUTPUT
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-          if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
+          if [ "v$NEW_VERSION" != "$LATEST_TAG" ]; then
             echo "version_changed=true" >> $GITHUB_OUTPUT
           else
             echo "version_changed=false" >> $GITHUB_OUTPUT
