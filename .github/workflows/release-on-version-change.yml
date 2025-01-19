@@ -59,21 +59,15 @@ jobs:
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Configure Git credentials
-        if: steps.compare_version.outputs.version_changed == 'true'
-        run: |
-            git config user.name "${{ github.actor }}"
-            git config user.email "${{ github.actor }}@users.noreply.github.com"
         
       - name: Push tag
         if: steps.compare_version.outputs.version_changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             NEW_VERSION=${{ steps.compare_version.outputs.NEW_VERSION }}
             git tag "v$NEW_VERSION"
             git push origin "v$NEW_VERSION"
-            env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         if: steps.compare_version.outputs.version_changed == 'true'
