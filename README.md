@@ -2,7 +2,7 @@
 
 ![Axiotree Banner](./attached_assets/axiotree-banner.png)
 
-🤖 A GitHub Action plugin that leverages AI-powered code generation and pull request management using Langchain technology.
+🤖 A GitHub Action plugin that leverages AI-powered code generation and pull request management using [Langchain technology](https://www.langchain.com).
 
 ## Features
 
