@@ -36,8 +36,7 @@
 ## Installation
 
 ### From GitHub Marketplace (Recommended)
-
-1. Visit the [Axiotree Langchain AI PR Action](https://github.com/marketplace/actions/axiotree-langchain-ai-pr) in the GitHub Marketplace
+1. Visit the [Axiotree AI Issue Resolver](https://github.com/marketplace/actions/ai-issue-resolver-ai-generated-pr-updates) in the GitHub Marketplace
 2. Click "Install it for free"
 3. Configure the action with required secrets
 4. Add the workflow file to your repository
