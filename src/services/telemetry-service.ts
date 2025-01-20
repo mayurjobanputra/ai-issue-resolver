@@ -1,4 +1,5 @@
 import { PostHog } from "posthog-node";
+import * as core from '@actions/core';
 import { performance } from "perf_hooks";
 
 export class TelemetryService {
@@ -8,8 +9,9 @@ export class TelemetryService {
   private constructor() {
     // Initialize PostHog with your project API key
     try {
+      const postHogApiKey = core.getInput('posthog-api-key', { required: true });
       this.client = new PostHog(
-        process.env.POSTHOG_API_KEY || "phc_default", // You should set this in your environment
+        postHogApiKey || "phc_default", // You should set this in your environment
         {
           host: process.env.POSTHOG_HOST || "https://app.posthog.com",
           flushAt: 1, // Immediately send events in development

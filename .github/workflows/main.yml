@@ -18,5 +18,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           model-api-key: ${{ secrets.MODEL_API_KEY }}
+          posthog-api-key: ${{ secrets.POSTHOG_API_KEY }}
           model-provider: 'openai'  # optional, defaults to 'openai'
           model-name: 'gpt-4'      # optional, defaults to 'gpt-4'
