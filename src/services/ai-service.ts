@@ -89,7 +89,7 @@ export class AIService {
 
     const response = await this.model.invoke([
       new SystemMessage(SYSTEM_PROMPTS.CODE_GENERATION),
-      new HumanMessage(`${formatInstructions}\nGenerate code changes based on this analysis:\n\n${analysis}`)
+      new HumanMessage(`${formatInstructions}\nStrictly return valid JSON as per this schema. Do not include anything else. Generate code changes based on this analysis:\n\n${analysis}`)
     ]);
 
     try {
@@ -119,7 +119,7 @@ export class AIService {
 
     const response = await this.model.invoke([
       new SystemMessage(SYSTEM_PROMPTS.CODE_GENERATION),
-      new HumanMessage(`${formatInstructions}\nGenerate code changes based on this feedback:\n\n${feedback}\n\nContext:\n${JSON.stringify(files)}`)
+      new HumanMessage(`${formatInstructions}\nStrictly return valid JSON as per this schema. Do not include anything else. Generate code changes based on this feedback:\n\n${feedback}\n\nContext:\n${JSON.stringify(files)}`)
     ]);
 
     try {
@@ -143,7 +143,7 @@ export class AIService {
 
     const response = await this.model.invoke([
       new SystemMessage(SYSTEM_PROMPTS.CODE_REVIEW),
-      new HumanMessage(`${formatInstructions}\nReview these files and provide comprehensive feedback:\n${JSON.stringify(files, null, 2)}`)
+      new HumanMessage(`${formatInstructions}\nStrictly return valid JSON as per this schema. Do not include anything else.Review these files and provide comprehensive feedback:\n${JSON.stringify(files, null, 2)}`)
     ]);
 
     try {
@@ -169,7 +169,7 @@ export class AIService {
   async analyzeSecurity(files: any[]): Promise<string> {
     const response = await this.model.invoke([
       new SystemMessage(SYSTEM_PROMPTS.SECURITY_REVIEW),
-      new HumanMessage(`Analyze these files for security concerns:\n${JSON.stringify(files)}`)
+      new HumanMessage(`Strictly return valid JSON as per this schema. Do not include anything else. Analyze these files for security concerns:\n${JSON.stringify(files)}`)
     ]);
     return response.content.toString();
   }
