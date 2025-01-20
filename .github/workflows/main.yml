@@ -19,5 +19,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           model-api-key: ${{ secrets.MODEL_API_KEY }}
           telemetry-api-key: ${{ secrets.POSTHOG_API_KEY }}
+          telemetry-api-host: ${{ secrets.POSTHOG_API_HOST }}
           model-provider: 'openai'  # optional, defaults to 'openai'
           model-name: 'gpt-4'      # optional, defaults to 'gpt-4'

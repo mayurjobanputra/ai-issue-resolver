@@ -24,6 +24,9 @@ inputs:
   telemetry-api-key:
     description: 'Posthog API key for telemetry'
     required: false
+  telemetry-api-host:
+    description: 'Posthog API host for telemetry'
+    required: false
 
 runs:
   using: 'node20'
