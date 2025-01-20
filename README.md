@@ -136,7 +136,7 @@ Comment on a PR with specific change requests:
 | OpenAI | 🧪 Testing | gpt-4, gpt-3.5-turbo | All features fully supported |
 | Anthropic (Claude) | 🧪 Testing | claude-3.5 sonnet, claude-instant | Basic code generation, review features |
 | Azure OpenAI | 🧪 Testing | gpt-4, gpt-3.5-turbo | Basic code generation, review features |
-| Ollama | 🚧 Planned | command, command-light | Not yet implemented |
+| Ollama | 🚧 Planned | Llama 3.3, codellama, qwen, codegemma | Not yet implemented |
 
 ## Best Practices
 
