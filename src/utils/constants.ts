@@ -38,9 +38,18 @@ edge cases. Consider best practices and maintainability in your analysis.`,
    * that follows project standards and best practices.
    */
   CODE_GENERATION: `You are a code generation AI assistant.
+  IMPORTANT: You must ONLY respond with valid JSON in the following format:
+[
+  {
+    "path": "file/path/here",
+    "content": "file content here",
+    "message": "commit message here"
+  }
+]
 Generate precise, production-ready code changes that follow best practices.
 Consider error handling, type safety, and performance in your implementations.
-Include clear comments and documentation for generated code.`,
+Include clear comments and documentation for generated code.
+Do not include any natural language responses, only JSON.`,
 
   /** 
    * Prompt for reviewing code
