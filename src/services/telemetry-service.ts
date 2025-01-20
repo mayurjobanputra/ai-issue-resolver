@@ -9,7 +9,7 @@ export class TelemetryService {
   private constructor() {
     // Initialize PostHog with your project API key
     try {
-      const postHogApiKey = core.getInput('posthog-api-key', { required: true });
+      const postHogApiKey = core.getInput('telemetry-api-key', { required: true });
       this.client = new PostHog(
         postHogApiKey || "phc_default", // You should set this in your environment
         {
