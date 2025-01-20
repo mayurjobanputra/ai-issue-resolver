@@ -14,8 +14,8 @@ export class PRHandler {
 
   /**
    * Handles comments on pull requests, supporting various AI commands:
-   * - /axiotree-langchain-ai-change: Generates and applies requested changes
-   * - /axiotree-langchain-ai-review: Performs comprehensive code review
+   * - /ai-issue-resolver-change: Generates and applies requested changes
+   * - /ai-issue-resolver-review: Performs comprehensive code review
    * 
    * @param comment - The comment object containing the command and context
    * @throws Error if handling the comment fails
@@ -29,8 +29,8 @@ export class PRHandler {
     const files = await this.githubService.getPRFiles(pr.number);
 
     // Handle change request command
-    if (comment.body.startsWith('/axiotree-langchain-ai-change')) {
-      const requestedChanges = comment.body.replace('/axiotree-langchain-ai-change', '').trim();
+    if (comment.body.startsWith('/ai-issue-resolver-change')) {
+      const requestedChanges = comment.body.replace('/ai-issue-resolver-change', '').trim();
       const changes = await this.aiService.generateChangesFromFeedback({
         feedback: requestedChanges,
         files,
@@ -55,7 +55,7 @@ export class PRHandler {
       });
     } 
     // Handle review command
-    else if (comment.body.startsWith('/axiotree-langchain-ai-review')) {
+    else if (comment.body.startsWith('/ai-issue-resolver-review')) {
       const review = await this.aiService.reviewCode(files);
       const securityAnalysis = await this.aiService.analyzeSecurity(files);
 
@@ -101,6 +101,6 @@ ${review.testingSuggestions.map((test) => `
 `).join('\n')}
 
 ---
-To request specific changes, use \`/axiotree-langchain-ai-change\` followed by your request.`;
+To request specific changes, use \`/ai-issue-resolver-change\` followed by your request.`;
   }
 }

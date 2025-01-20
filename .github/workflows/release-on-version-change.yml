@@ -67,7 +67,7 @@ jobs:
           echo '' >> $GITHUB_OUTPUT
           echo '## Key Features' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
-          echo '* Automated PR Generation: Generate PRs automatically from issues tagged with axiotree-langchain-ai-pr.' >> $GITHUB_OUTPUT
+          echo '* Automated PR Generation: Generate PRs automatically from issues tagged with ai-issue-resolver-pr.' >> $GITHUB_OUTPUT
           echo '* Advanced Code Review: Comprehensive code quality analysis, performance optimization suggestions, and security vulnerability scanning.' >> $GITHUB_OUTPUT
           echo '* Interactive PR Updates: Update PRs using slash commands and request specific changes with natural language.' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
@@ -78,9 +78,9 @@ jobs:
           echo '' >> $GITHUB_OUTPUT
           echo '## Usage' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
-          echo '* Label issues with axiotree-langchain-ai-pr to generate PRs.' >> $GITHUB_OUTPUT
-          echo '* Use /axiotree-langchain-ai-review for code reviews.' >> $GITHUB_OUTPUT
-          echo '* Use /axiotree-langchain-ai-change to request specific changes.' >> $GITHUB_OUTPUT
+          echo '* Label issues with ai-issue-resolver-pr to generate PRs.' >> $GITHUB_OUTPUT
+          echo '* Use /ai-issue-resolver-review for code reviews.' >> $GITHUB_OUTPUT
+          echo '* Use /ai-issue-resolver-change to request specific changes.' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
           echo '## Support' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT

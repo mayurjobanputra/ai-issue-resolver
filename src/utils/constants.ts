@@ -3,19 +3,19 @@
  * by the AI PR generation system. Adding this label to an
  * issue will trigger automatic PR generation.
  */
-export const AI_PR_LABEL = 'axiotree-langchain-ai-pr';
+export const AI_PR_LABEL = 'ai-issue-resolver-pr';
 
 /**
  * Command used in PR comments to request AI-powered changes
- * Usage: /axiotree-langchain-ai-change [description of desired changes]
+ * Usage: /ai-issue-resolver-change [description of desired changes]
  */
-export const AI_CHANGE_COMMAND = '/axiotree-langchain-ai-change';
+export const AI_CHANGE_COMMAND = '/ai-issue-resolver-change';
 
 /**
  * Command used in PR comments to request an AI code review
- * Usage: /axiotree-langchain-ai-review
+ * Usage: /ai-issue-resolver-review
  */
-export const AI_REVIEW_COMMAND = '/axiotree-langchain-ai-review';
+export const AI_REVIEW_COMMAND = '/ai-issue-resolver-review';
 
 /**
  * System prompts for different AI operations

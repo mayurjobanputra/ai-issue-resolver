@@ -58,7 +58,7 @@ export class IssueHandler {
       title: `AI: ${issue.title}`,
       body: prDescription,
       branch: branchName,
-      labels: ['axiotree-langchain-ai-pr'],
+      labels: ['ai-issue-resolver-pr'],
     });
 
     // Add comment to the original issue with PR link

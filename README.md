@@ -7,7 +7,7 @@
 ## Features
 
 - 🎯 **Automated PR Generation**
-  - Generate PRs automatically from issues tagged with `axiotree-langchain-ai-pr`
+  - Generate PRs automatically from issues tagged with `ai-issue-resolver-pr`
   - AI analysis of issue descriptions for accurate code changes
   - Intelligent branch management and commit organization
 
@@ -30,8 +30,8 @@
   - Request specific changes with natural language
   - Get instant AI-powered feedback
   - Multiple command support:
-    - `/axiotree-langchain-ai-change` - Request specific code changes
-    - `/axiotree-langchain-ai-review` - Trigger comprehensive code review
+    - `/ai-issue-resolver-change` - Request specific code changes
+    - `/ai-issue-resolver-review` - Trigger comprehensive code review
 
 ## Installation
 
@@ -57,8 +57,8 @@ jobs:
   ai-pr:
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'axiotree-langchain-ai-pr')) ||
-      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/axiotree-langchain-ai'))
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver-pr')) ||
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver'))
     steps:
       - uses: actions/checkout@v3
       - uses: axiotree/langchain-ai-pr@v1
@@ -80,7 +80,7 @@ jobs:
 ### 1. Generating AI PRs from Issues
 
 1. Create a new issue describing the desired changes
-2. Add the `axiotree-langchain-ai-pr` label
+2. Add the `ai-issue-resolver-pr` label
 3. The action will automatically:
    - Analyze the issue using AI
    - Generate code changes
@@ -102,7 +102,7 @@ Please add input validation for:
 
 Comment on any PR with:
 ```
-/axiotree-langchain-ai-review
+/ai-issue-resolver-review
 ```
 
 The AI will provide:
@@ -115,7 +115,7 @@ The AI will provide:
 
 Comment on a PR with specific change requests:
 ```
-/axiotree-langchain-ai-change Please add error messages below each input field
+/ai-issue-resolver-change Please add error messages below each input field
 ```
 
 ## Configuration
