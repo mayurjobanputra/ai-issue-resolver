@@ -13,7 +13,7 @@ export class TelemetryService {
       this.client = new PostHog(
         postHogApiKey || "phc_default", // You should set this in your environment
         {
-          host: process.env.POSTHOG_HOST || "https://app.posthog.com",
+          host: core.getInput('telemetry-api-host') || "https://eu.i.posthog.com",
           flushAt: 1, // Immediately send events in development
           flushInterval: 0, // Disable automatic flushing
         },
