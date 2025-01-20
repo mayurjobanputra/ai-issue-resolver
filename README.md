@@ -1,13 +1,13 @@
-# AI Issue Resolver - using Langchain
+# Axiotree Langchain AI PR
 
 ![Axiotree Banner](./attached_assets/axiotree-banner.jpg)
 
-🤖 A GitHub Action plugin that integrates AI-powered code generation and review processes into your GitHub workflow using Langchain.
+🤖 A GitHub Action plugin that leverages AI-powered code generation and pull request management using Langchain technology.
 
 ## Features
 
 - 🎯 **Automated PR Generation**
-  - Generate PRs automatically from issues tagged with `ai-issue-resolver`
+  - Generate PRs automatically from issues tagged with `axiotree-langchain-ai-pr`
   - AI analysis of issue descriptions for accurate code changes
   - Intelligent branch management and commit organization
 
@@ -30,21 +30,21 @@
   - Request specific changes with natural language
   - Get instant AI-powered feedback
   - Multiple command support:
-    - `/ai-issue-resolver-change` - Request specific code changes
-    - `/ai-issue-resolver-review` - Trigger comprehensive code review
+    - `/axiotree-langchain-ai-change` - Request specific code changes
+    - `/axiotree-langchain-ai-review` - Trigger comprehensive code review
 
 ## Installation
 
-### From GitHub Marketplace
+### From GitHub Marketplace (Recommended)
 
-1. Visit the [Axiotree Langchain AI PR Action](https://github.com/marketplace) in the GitHub Marketplace
+1. Visit the [Axiotree Langchain AI PR Action](https://github.com/marketplace/actions/axiotree-langchain-ai-pr) in the GitHub Marketplace
 2. Click "Install it for free"
-3. Select the repositories where you want to use the action
-4. Follow the setup instructions below to configure the action
+3. Configure the action with required secrets
+4. Add the workflow file to your repository
 
-### Manual Setup
+### Quick Setup
 
-1. Add the action to your repository's `.github/workflows/ai-pr.yml`:
+1. Create `.github/workflows/ai-pr.yml` in your repository:
 
 ```yaml
 name: AI PR Generation
@@ -58,102 +58,181 @@ jobs:
   ai-pr:
     runs-on: ubuntu-latest
     if: |
-      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver')) ||
-      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver-change'))
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'axiotree-langchain-ai-pr')) ||
+      (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/axiotree-langchain-ai'))
     steps:
       - uses: actions/checkout@v3
-      - uses: axiotree/ai-issue-resolver@v1
+      - uses: axiotree/langchain-ai-pr@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          model-provider: 'openai'  # optional, defaults to 'openai'
-          model-name: 'gpt-4'      # optional, defaults to 'gpt-4'
+          model-api-key: ${{ secrets.MODEL_API_KEY }}
+          model-provider: 'openai'  # optional
+          model-name: 'gpt-4'      # optional
+          base-branch: 'main'      # optional
+          review-threshold: '0.8'   # optional
 ```
 
-2. Configure the required secrets in your repository settings:
+2. Add required secrets in your repository settings:
    - `GITHUB_TOKEN`: Automatically provided by GitHub
-   - `OPENAI_API_KEY`: Your OpenAI API key
+   - `MODEL_API_KEY`: Your Language Model API key (supports OpenAI, Anthropic, etc.)
 
 ## Usage
 
-### Generating AI PRs from Issues
+### 1. Generating AI PRs from Issues
 
 1. Create a new issue describing the desired changes
-2. Add the `ai-issue-resolver` label to the issue
-3. The action will:
-   - Analyze the issue using the configured LLM
-   - Generate appropriate code changes
-   - Create a new PR with the changes
-   - Tag the PR with `ai-issue-resolver`
+2. Add the `axiotree-langchain-ai-pr` label
+3. The action will automatically:
+   - Analyze the issue using AI
+   - Generate code changes
+   - Create a PR with the changes
+   - Add relevant labels
 
 Example issue:
 ```markdown
-Title: Add input validation to user registration form
+Title: Add input validation to user registration
 
-We need to add proper input validation to the registration form:
-- Email format validation
-- Password strength requirements
-- Username character restrictions
-
-Please implement these validations using the existing form library.
+Description:
+Please add input validation for:
+- Email format checking
+- Password strength requirements (min 8 chars, special chars)
+- Username validation (alphanumeric only)
 ```
 
-### Using Code Review Features
+### 2. Using Code Review
 
-1. On any pull request, comment with `/ai-issue-resolver-review`
-2. The AI will provide comprehensive feedback including:
-   - Code quality assessment
-   - Security vulnerability scan
-   - Performance optimization suggestions
-   - Testing recommendations
-
-Example review command:
-```markdown
-/ai-issue-resolver-review
+Comment on any PR with:
+```
+/axiotree-langchain-ai-review
 ```
 
-### Requesting Changes in PRs
+The AI will provide:
+- Code quality assessment
+- Security scan results
+- Performance suggestions
+- Testing recommendations
 
-Use the `/ai-issue-resolver-change` slash command followed by your request:
+### 3. Requesting Changes
 
-```markdown
-/ai-issue-resolver-change Please add error messages that appear below each input field when validation fails
+Comment on a PR with specific change requests:
+```
+/axiotree-langchain-ai-change Please add error messages below each input field
 ```
 
-## Configuration Options
+## Configuration
 
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
-| `github-token` | GitHub token for API access | Yes | N/A |
-| `openai-api-key` | OpenAI API key | Yes | N/A |
-| `model-provider` | LLM provider (openai, anthropic, ollama) | No | 'openai' |
-| `model-name` | Name of the model to use | No | 'gpt-4' |
+| `github-token` | GitHub API token | Yes | N/A |
+| `model-api-key` | API key for the Language Model (supports OpenAI, Anthropic, etc.) | Yes | N/A |
+| `model-provider` | LLM provider choice | No | openai |
+| `model-name` | Model to use | No | gpt-4 |
+| `base-branch` | Base branch for PRs | No | main |
+| `review-threshold` | Review confidence threshold | No | 0.8 |
+
+## LLM Provider Support Status
+
+| Provider | Status | Supported Models | Features |
+|----------|---------|-----------------|-----------|
+| OpenAI | 🧪 Testing | gpt-4, gpt-3.5-turbo | All features fully supported |
+| Anthropic (Claude) | 🧪 Testing | claude-3.5 sonnet, claude-instant | Basic code generation, review features |
+| Azure OpenAI | 🧪 Testing | gpt-4, gpt-3.5-turbo | Basic code generation, review features |
+| Ollama | 🚧 Planned | command, command-light | Not yet implemented |
 
 ## Best Practices
 
-1. Write clear, detailed issue descriptions for better AI understanding
-2. Use specific slash commands for targeted changes
-3. Review AI-generated changes before merging
-4. Provide feedback in PR comments to improve future generations
+1. Use clear, detailed issue descriptions
+2. Review AI-generated changes before merging
+3. Utilize slash commands for specific updates
+4. Provide feedback to improve future generations
 
 ## Support
 
-Need help? Have questions? Here's how to get support:
+Need help? We're here:
 
 1. Check the [Documentation](./docs)
 2. Open an [Issue](../../issues)
-3. Ask questions in [Discussions](../../discussions)
-4. Email support at support@axiotree.com
+3. Visit our [Discussions](../../discussions)
+4. Contact: support@axiotree.com
 
-## Contributing
+## Local Testing
 
-Contributions are welcome! Please:
+To test the action locally:
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to your branch
-5. Create a Pull Request
+1. Install Act based on your operating system:
+
+   **macOS (using Homebrew):**
+   ```bash
+   brew install act
+   ```
+
+   **Linux (using curl):**
+   ```bash
+   curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+   ```
+
+   **Windows (using Chocolatey):**
+   ```bash
+   choco install act-cli
+   ```
+
+   Alternatively, you can download the latest release from: https://github.com/nektos/act/releases
+
+2. Set up required environment variables:
+   ```bash
+   export GITHUB_TOKEN=your_github_token
+   export MODEL_API_KEY=your_api_key
+   ```
+
+   For Windows CMD:
+   ```cmd
+   set GITHUB_TOKEN=your_github_token
+   set MODEL_API_KEY=your_api_key
+   ```
+
+   For Windows PowerShell:
+   ```powershell
+   $env:GITHUB_TOKEN = "your_github_token"
+   $env:MODEL_API_KEY = "your_api_key"
+   ```
+
+3. Run the test script:
+   ```bash
+   chmod +x test/run-local.sh
+   ./test/run-local.sh
+   ```
+
+   For Windows:
+   ```powershell
+   # Using Git Bash or WSL is recommended
+   bash test/run-local.sh
+   ```
+
+This will simulate the GitHub Actions environment locally and test the action with a sample issue event.
+
+#### Prerequisites
+
+1. **Docker Installation**
+   - [Install Docker Desktop](https://www.docker.com/products/docker-desktop/) (recommended for Windows/Mac)
+   - For Linux: `sudo apt-get install docker.io`
+   - Ensure Docker daemon is running before testing
+
+2. **Required Tokens**
+   - GitHub Personal Access Token with repo scope
+   - OpenAI / Anthropic / Ollama, etc API Key for AI operations
+
+#### Troubleshooting
+
+- If you get permission errors, make sure the script is executable: `chmod +x test/run-local.sh`
+- For Windows users, using Git Bash or WSL (Windows Subsystem for Linux) is recommended
+- Make sure Docker is installed and running, as Act requires it to simulate the GitHub Actions environment
+- If you get "act not found", make sure it's in your system's PATH
+- For Docker-related issues:
+  - Check if Docker daemon is running: `docker ps`
+  - Start Docker service if needed:
+    - Linux: `sudo systemctl start docker`
+    - Windows/Mac: Start Docker Desktop
+  - Verify Docker installation: `docker --version`
 
 ## License
 

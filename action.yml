@@ -10,7 +10,7 @@ inputs:
   github-token:
     description: 'GitHub token for API access'
     required: true
-  openai-api-key:
+  model-api-key:
     description: 'OpenAI API key for GPT models'
     required: true
   model-provider:

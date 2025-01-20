@@ -21,11 +21,11 @@ import { Octokit } from '@octokit/rest';
  * 
  * @throws {Error} If required inputs are missing or API calls fail
  */
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     // Initialize required API tokens and configuration from action inputs
     const token = core.getInput('github-token', { required: true });
-    const openaiKey = core.getInput('openai-api-key', { required: true });
+    const modelApiKey = core.getInput('model-api-key', { required: true });
     const modelProvider = core.getInput('model-provider') || 'openai';
     const modelName = core.getInput('model-name') || 'gpt-4';
 
@@ -35,7 +35,7 @@ async function run(): Promise<void> {
     const aiService = new AIService({
       provider: modelProvider,
       modelName: modelName,
-      apiKey: openaiKey,
+      apiKey: modelApiKey,
     });
 
     const eventName = github.context.eventName;

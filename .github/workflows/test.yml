@@ -1,0 +1,22 @@
+name: Test Action Locally
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'ai-issue-resolver')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Action
+        run: |
+          npm ci
+          npm run build
+      - name: Run Action
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          model-api-key: ${{ secrets.MODEL_API_KEY }}
+          model-provider: 'openai'
+          model-name: 'gpt-4'
