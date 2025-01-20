@@ -7,6 +7,7 @@ import { GitHubService } from './services/github-service.js';
 import { AI_PR_LABEL } from './utils/constants.js';
 import type { Issue, Comment } from './types/index.js';
 import { Octokit } from '@octokit/rest';
+import { telemetry } from './services/telemetry-service.js';
 
 /**
  * Main entry point for the GitHub Action.
@@ -28,6 +29,12 @@ export async function run(): Promise<void> {
     const modelApiKey = core.getInput('model-api-key', { required: true });
     const modelProvider = core.getInput('model-provider') || 'openai';
     const modelName = core.getInput('model-name') || 'gpt-4';
+
+    telemetry.logAPICall('action_initialization', 'setup', {
+      modelProvider,
+      modelName,
+      eventName: github.context.eventName
+    });
 
     // Initialize core services with configuration
     const octokit = github.getOctokit(token) as unknown as Pick<Octokit, 'rest'>;
