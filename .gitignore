@@ -7,3 +7,4 @@ vite.config.ts.*
 .cache/
 .local/
 .upm/
+test.yml
