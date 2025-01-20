@@ -9,6 +9,7 @@ jobs:
   ai-pr:
     runs-on: ubuntu-latest
     if: |
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver-pr')) ||
       (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'ai-issue-resolver')) ||
       (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver-change'))
     steps:
