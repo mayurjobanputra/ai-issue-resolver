@@ -21,6 +21,9 @@ inputs:
     description: 'Name of the model to use'
     required: false
     default: 'gpt-4'
+  telemetry-api-key:
+    description: 'Posthog API key for telemetry'
+    required: false
 
 runs:
   using: 'node20'
