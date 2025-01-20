@@ -60,10 +60,9 @@ jobs:
 
           # Output the notes to be used by the next step
           echo 'notes<<RELEASE_NOTES' >> $GITHUB_OUTPUT
-          echo 'message<<EOF' >> $GITHUB_OUTPUT
           echo '# Axiotree AI Issue Resolver' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
-          echo 'We are excited to announce the v$NEW_VERSION release of Axiotree AI Issue Resolver, a GitHub Action plugin that integrates AI-powered code generation and review processes into your GitHub workflow using Langchain.' >> $GITHUB_OUTPUT
+          echo "We are excited to announce the v${NEW_VERSION} release of Axiotree AI Issue Resolver, a GitHub Action plugin that integrates AI-powered code generation and review processes into your GitHub workflow using Langchain." >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
           echo '## Key Features' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
@@ -73,7 +72,7 @@ jobs:
           echo '' >> $GITHUB_OUTPUT
           echo '## Installation' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
-          echo '* Visit the GitHub Marketplace.' >> $GITHUB_OUTPUT
+          echo '* Visit the [GitHub Marketplace](https://github.com/marketplace/actions/ai-issue-resolver-ai-generated-pr-updates).' >> $GITHUB_OUTPUT
           echo '* Add the action to your repository workflow.' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
           echo '## Usage' >> $GITHUB_OUTPUT
@@ -85,7 +84,6 @@ jobs:
           echo '## Support' >> $GITHUB_OUTPUT
           echo '' >> $GITHUB_OUTPUT
           echo 'For support, check the documentation, open an issue, or email support@axiotree.com.' >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
           echo 'RELEASE_NOTES' >> $GITHUB_OUTPUT
           
      
