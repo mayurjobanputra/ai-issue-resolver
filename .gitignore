@@ -8,3 +8,7 @@ vite.config.ts.*
 .local/
 .upm/
 test.yml
+__test__/
+__mocks__/
+__tests__/
+.env

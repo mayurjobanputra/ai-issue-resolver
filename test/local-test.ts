@@ -1,4 +1,11 @@
+// Library
+import dotenv from 'dotenv';
+
+// Internal
 import { run } from '../src/index';
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Set up environment for testing
 process.env.GITHUB_EVENT_NAME = 'issues';
