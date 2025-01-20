@@ -61,7 +61,7 @@ jobs:
       (github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/ai-issue-resolver'))
     steps:
       - uses: actions/checkout@v3
-      - uses: axiotree/langchain-ai-pr@v1
+      - uses: Axiotree/ai-issue-resolver
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           model-api-key: ${{ secrets.MODEL_API_KEY }}
