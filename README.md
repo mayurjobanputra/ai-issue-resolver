@@ -1,6 +1,6 @@
-# AI Issue Resolver - Using Langchain - By AxioTree
+# AI Issue Resolver - using Langchain - By AxioTree
 
-![Axiotree Banner](./attached_assets/axiotree-banner.jpg)
+![Axiotree Banner](./attached_assets/axiotree-banner.png)
 
 🤖 A GitHub Action plugin that leverages AI-powered code generation and pull request management using Langchain technology.
 
