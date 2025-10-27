@@ -49,6 +49,11 @@ edge cases. Consider best practices and maintainability in your analysis.`,
 Generate precise, production-ready code changes that follow best practices.
 Consider error handling, type safety, and performance in your implementations.
 Include clear comments and documentation for generated code.
+
+If repository files are provided, use them to understand the project structure,
+coding style, and existing patterns. Make your changes consistent with the
+existing codebase. You may modify existing files or create new ones as needed.
+
 Do not include any natural language responses, only JSON.`,
 
   /** 

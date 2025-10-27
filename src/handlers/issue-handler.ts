@@ -26,9 +26,16 @@ export class IssueHandler {
 
       // Analyze issue content using AI
       const analysis = await this.aiService.analyzeIssue(issue.body);
-
-      // Generate code changes based on analysis
-      const changes = await this.aiService.generateCodeChanges(analysis);
+      
+      // Get all repository files to provide context for code generation
+      telemetry.logAPICall('issue_handler', 'get_repository_files', {
+        issueNumber: issue.number
+      });
+      
+      const repositoryFiles = await this.githubService.getAllRepositoryFiles();
+      
+      // Generate code changes based on analysis and repository files
+      const changes = await this.aiService.generateCodeChanges(analysis, repositoryFiles);
 
       telemetry.logAPICall('issue_handler', 'generate_branch', {
         issueNumber: issue.number,

@@ -31,6 +31,7 @@ type OctokitInstance = Pick<Octokit, 'rest'> & {
 /**
  * GitHubService handles all interactions with the GitHub API.
  * It provides methods for managing branches, files, pull requests, and issue comments.
+ * It also provides methods for retrieving repository content.
  */
 export class GitHubService {
   constructor(private octokit: OctokitInstance) {}
@@ -202,5 +203,90 @@ export class GitHubService {
       issue_number: prNumber,
       body,
     });
+  }
+
+  /**
+   * Retrieves all files from the repository, excluding GitHub Action files.
+   * @returns Array of file objects with path and content
+   * @throws Error if file retrieval fails
+   */
+  async getAllRepositoryFiles(): Promise<Array<{path: string, content: string}>> {
+    const { owner, repo } = context.repo;
+    const files: Array<{path: string, content: string}> = [];
+    
+    try {
+      // Get the repository content at the root level
+      const { data: rootContent } = await this.octokit.rest.repos.getContent({
+        owner,
+        repo,
+        path: '',
+      });
+      
+      // Process each item recursively
+      await this.processRepositoryContent(rootContent, '', files);
+      
+      return files;
+    } catch (error) {
+      console.error('Error retrieving repository files:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Recursively processes repository content to extract all files.
+   * @param content - Content items from GitHub API
+   * @param basePath - Current base path for recursion
+   * @param files - Array to collect file information
+   */
+  private async processRepositoryContent(
+    content: any,
+    basePath: string,
+    files: Array<{path: string, content: string}>
+  ): Promise<void> {
+    const { owner, repo } = context.repo;
+    
+    // Ensure content is an array
+    const contentArray = Array.isArray(content) ? content : [content];
+    
+    for (const item of contentArray) {
+      const itemPath = basePath ? `${basePath}/${item.name}` : item.name;
+      
+      // Skip GitHub Action files and directories
+      if (
+        itemPath === '.github' ||
+        itemPath.startsWith('.github/') ||
+        itemPath === 'action.yml' ||
+        itemPath === '.git' ||
+        itemPath.startsWith('.git/')
+      ) {
+        continue;
+      }
+      
+      if (item.type === 'dir') {
+        // Recursively process directories
+        const { data: dirContent } = await this.octokit.rest.repos.getContent({
+          owner,
+          repo,
+          path: itemPath,
+        });
+        
+        await this.processRepositoryContent(dirContent, itemPath, files);
+      } else if (item.type === 'file') {
+        // Get file content
+        const { data: fileData } = await this.octokit.rest.repos.getContent({
+          owner,
+          repo,
+          path: itemPath,
+        });
+        
+        // Decode content from base64
+        const content = Buffer.from(fileData.content, 'base64').toString('utf-8');
+        
+        files.push({
+          path: itemPath,
+          content: content
+        });
+      }
+    }
   }
 }

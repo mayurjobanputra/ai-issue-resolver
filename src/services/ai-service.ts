@@ -94,20 +94,39 @@ export class AIService {
   }
 
   /**
-   * Generates code changes based on the provided technical analysis.
+   * Generates code changes based on the provided technical analysis and repository files.
    * Uses structured output parsing to ensure consistent change format.
    * @param analysis - Technical analysis of the requirements
+   * @param repositoryFiles - Optional array of repository files to provide context
    * @returns Array of code changes to implement
    */
-  async generateCodeChanges(analysis: string): Promise<CodeChange[]> {
+  async generateCodeChanges(
+    analysis: string,
+    repositoryFiles?: Array<{path: string, content: string}>
+  ): Promise<CodeChange[]> {
     const endTimer = telemetry.startTimer('generateCodeChanges');
     try {
       const parser = StructuredOutputParser.fromZodSchema(this.codeChangeSchema);
       const formatInstructions = parser.getFormatInstructions();
 
+      // Prepare the message content
+      let messageContent = `${formatInstructions}\nStrictly return valid JSON as per this schema. Do not include anything else. Generate code changes based on this analysis:\n\n${analysis}`;
+      
+      // Add repository files context if provided
+      if (repositoryFiles && repositoryFiles.length > 0) {
+        messageContent += `\n\nRepository files for context:\n`;
+        
+        // Add file information in a structured format
+        const fileContext = repositoryFiles.map(file => {
+          return `File: ${file.path}\n\`\`\`\n${file.content}\n\`\`\``;
+        }).join('\n\n');
+        
+        messageContent += fileContext;
+      }
+      
       const response = await this.model.invoke([
         new SystemMessage(SYSTEM_PROMPTS.CODE_GENERATION),
-        new HumanMessage(`${formatInstructions}\nStrictly return valid JSON as per this schema. Do not include anything else. Generate code changes based on this analysis:\n\n${analysis}`)
+        new HumanMessage(messageContent)
       ]);
 
       try {

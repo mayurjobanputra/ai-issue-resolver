@@ -72,7 +72,7 @@ export async function run(): Promise<void> {
       } as Comment;
 
       // Handle AI commands in comments
-      if (comment.body.startsWith('/axiotree-langchain-ai')) {
+      if (comment.body.startsWith('/ai-issue-resolver')) {
         await prHandler.handleComment(comment);
       }
     }
