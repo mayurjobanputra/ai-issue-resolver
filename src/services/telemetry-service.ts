@@ -9,9 +9,21 @@ export class TelemetryService {
   private constructor() {
     // Initialize PostHog with your project API key
     try {
-      const postHogApiKey = core.getInput('telemetry-api-key', { required: true });
+      const postHogApiKey = core.getInput('telemetry-api-key', { required: false });
+      
+      // If no API key is provided, create a dummy client
+      if (!postHogApiKey) {
+        console.log("Telemetry disabled - no API key provided");
+        this.client = {
+          capture: () => Promise.resolve(),
+          shutdown: () => Promise.resolve(),
+          flush: () => Promise.resolve(),
+        } as unknown as PostHog;
+        return;
+      }
+      
       this.client = new PostHog(
-        postHogApiKey || "phc_default", // You should set this in your environment
+        postHogApiKey,
         {
           host: core.getInput('telemetry-api-host') || "https://eu.i.posthog.com",
           flushAt: 1, // Immediately send events in development
