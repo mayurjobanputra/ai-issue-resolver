@@ -279,13 +279,18 @@ export class GitHubService {
           path: itemPath,
         });
         
-        // Decode content from base64
-        const content = Buffer.from(fileData.content, 'base64').toString('utf-8');
+        // Ensure fileData is not an array and has content property
+        if (!Array.isArray(fileData) && 'content' in fileData) {
+          // Decode content from base64
+          const content = Buffer.from(fileData.content, 'base64').toString('utf-8');
+          
+          files.push({
+            path: itemPath,
+            content: content
+          });
+        }
         
-        files.push({
-          path: itemPath,
-          content: content
-        });
+        // No need to push here as we've already done it in the if block
       }
     }
   }
