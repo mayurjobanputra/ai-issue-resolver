@@ -9,6 +9,7 @@
 - 🎯 **Automated PR Generation**
   - Generate PRs automatically from issues tagged with `ai-issue-resolver-pr`
   - AI analysis of issue descriptions for accurate code changes
+  - Full repository context for intelligent code generation
   - Intelligent branch management and commit organization
 
 - 🔍 **Advanced Code Review**
@@ -83,7 +84,8 @@ jobs:
 2. Add the `ai-issue-resolver-pr` label
 3. The action will automatically:
    - Analyze the issue using AI
-   - Generate code changes
+   - Provide the AI with full repository context (excluding GitHub Action files)
+   - Generate code changes that align with your existing codebase
    - Create a PR with the changes
    - Add relevant labels
 
@@ -144,6 +146,7 @@ Comment on a PR with specific change requests:
 2. Review AI-generated changes before merging
 3. Utilize slash commands for specific updates
 4. Provide feedback to improve future generations
+5. For complex changes, include specific file paths in your issue description to help the AI focus
 
 ## Support
 
