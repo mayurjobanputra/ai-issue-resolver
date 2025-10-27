@@ -251,13 +251,17 @@ export class GitHubService {
     for (const item of contentArray) {
       const itemPath = basePath ? `${basePath}/${item.name}` : item.name;
       
-      // Skip GitHub Action files and directories
+      // Skip GitHub Action files, dist folder, and other non-relevant directories
       if (
         itemPath === '.github' ||
         itemPath.startsWith('.github/') ||
         itemPath === 'action.yml' ||
         itemPath === '.git' ||
-        itemPath.startsWith('.git/')
+        itemPath.startsWith('.git/') ||
+        itemPath === 'dist' ||
+        itemPath.startsWith('dist/') ||
+        itemPath === 'node_modules' ||
+        itemPath.startsWith('node_modules/')
       ) {
         continue;
       }
